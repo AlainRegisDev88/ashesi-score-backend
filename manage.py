@@ -1,37 +1,22 @@
-from django.contrib.auth.models import AbstractUser
-from django.db import models
+#!/usr/bin/env python
+"""Django's command-line utility for administrative tasks."""
+import os
+import sys
 
 
-class User(AbstractUser):
-  class Role(models.TextChoices):
-    SUPER_ADMIN = "SUPER_ADMIN", "Super Admin"
-    ADMIN = "ADMIN", "Admin"
-    REPORTER = "REPORTER", "Reporter"
+def main():
+    """Run administrative tasks."""
+    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings')
+    try:
+        from django.core.management import execute_from_command_line
+    except ImportError as exc:
+        raise ImportError(
+            "Couldn't import Django. Are you sure it's installed and "
+            "available on your PYTHONPATH environment variable? Did you "
+            "forget to activate a virtual environment?"
+        ) from exc
+    execute_from_command_line(sys.argv)
 
-  email = models.EmailField(unique=True, max_length=254)
-  role = models.CharField(
-      max_length=12, choices=Role.choices, default=Role.REPORTER
-  )
-  sport_id = models.ForeignKey(
-      "sports.Sport",
-      on_delete=models.PROTECT,
-      null=True,
-      blank=True,
-      related_name="users",
-  )
-  is_active = models.BooleanField(default=True)
-  last_login = models.DateTimeField(null=True, blank=True)
 
-  class Meta:
-    db_table = "accounts_user"
-    constraints = [
-        models.CheckConstraint(
-            check=(
-                models.Q(role="SUPER_ADMIN", sport_id__isnull=True)
-                | models.Q(
-                    role__in=["ADMIN", "REPORTER"], sport_id__isnull=False
-                )
-            ),
-            name="user_role_sport_check",
-        )
-    ]
+if __name__ == '__main__':
+    main()
