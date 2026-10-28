@@ -1,3 +1,20 @@
 from django.contrib import admin
+from .models import AuditLog
 
-# Register your models here.
+
+@admin.register(AuditLog)
+class AuditLogAdmin(admin.ModelAdmin):
+    list_display = ("created_at", "user", "action", "entity_type", "entity_id")
+    list_filter = ("action", "entity_type", "created_at")
+    search_fields = ("user__email", "entity_type", "entity_id")
+    readonly_fields = ("created_at", "user", "action", "entity_type", "entity_id", "changes")
+
+    # Enforce append-only nature in the admin
+    def has_add_permission(self, request):
+        return False
+
+    def has_change_permission(self, request, obj=None):
+        return False
+
+    def has_delete_permission(self, request, obj=None):
+        return False
