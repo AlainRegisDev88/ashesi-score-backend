@@ -48,7 +48,7 @@ class Match(MatchRulesMixin):
             # v3.0 Addendum check: exactly one of group_id/knockout_tie_id set whenever stage_id is set; 
             # both NULL when stage_id is NULL
             models.CheckConstraint(
-                check=(
+                condition=(
                     models.Q(stage__isnull=True, group__isnull=True, knockout_tie__isnull=True) |
                     models.Q(stage__isnull=False, group__isnull=False, knockout_tie__isnull=True) |
                     models.Q(stage__isnull=False, group__isnull=True, knockout_tie__isnull=False)

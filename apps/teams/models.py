@@ -74,7 +74,7 @@ class SquadMembership(models.Model):
   class Meta:
     constraints = [
         models.CheckConstraint(
-            check=models.Q(end_date__isnull=True)
+            condition=models.Q(end_date__isnull=True)
             | models.Q(end_date__gt=models.F("start_date")),
             name="membership_end_date_gt_start",
         )

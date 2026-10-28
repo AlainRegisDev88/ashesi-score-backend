@@ -106,7 +106,7 @@ class KnockoutTie(models.Model):
         unique_together = ("stage", "slot")
         constraints = [
             models.CheckConstraint(
-                check=models.Q(advances_to_tie__isnull=True) | models.Q(advances_to_slot__isnull=False),
+                condition=models.Q(advances_to_tie__isnull=True) | models.Q(advances_to_slot__isnull=False),
                 name="advances_to_slot_required",
             )
         ]
