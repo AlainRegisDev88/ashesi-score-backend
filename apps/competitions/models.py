@@ -57,7 +57,7 @@ class CompetitionTeam(models.Model):
         ]
 
 
-class RankingRules(models.Model):
+class RankingRule(models.Model):
     class Criterion(models.TextChoices):
         POINTS = "POINTS", "Points"
         WINS = "WINS", "Wins"
