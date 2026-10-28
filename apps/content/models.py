@@ -33,7 +33,7 @@ class NewsArticle(models.Model):
   class Meta:
     constraints = [
         models.CheckConstraint(
-            check=~models.Q(status="PUBLISHED")
+            condition=~models.Q(status="PUBLISHED")
             | models.Q(published_at__isnull=False),
             name="news_published_at_required",
         )
